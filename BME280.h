@@ -19,11 +19,13 @@
 
 #include <Sensor.h>
 #include <Wire.h>
+#include <SPI.h>
 
 /*=========================================================================
     I2C ADDRESS/BITS
     -----------------------------------------------------------------------*/
-    #define BME280_ADDRESS                (0x77)
+    #define BME280_ADDRESS                (0x76
+)
 /*=========================================================================*/
 
 /*=========================================================================
@@ -107,7 +109,7 @@ class BME280
     float readTemperature(void);
     float readPressure(void);
     float readHumidity(void);
-    float readAltitude(float seaLevel);
+    float readAltitude(void);
 
   private:
 
