@@ -14,9 +14,7 @@
   Written by Limor Fried & Kevin Townsend for Adafruit Industries.
   BSD license, all text above must be included in any redistribution
  ***************************************************************************/
-#include "Arduino.h"
-#include <SPI.h>
-#include "BME280.h"
+#include <BME280.h>
 
 
 /***************************************************************************
@@ -267,11 +265,6 @@ void BME280::readCoefficients(void)
     _bme280_calib.dig_H6 = (int8_t)read8(BME280_REGISTER_DIG_H6);
 }
 
-/**************************************************************************/
-/*!
-
-*/
-/**************************************************************************/
 float BME280::readTemperature(void)
 {
   int32_t var1, var2;
@@ -292,12 +285,8 @@ float BME280::readTemperature(void)
   return T/100;
 }
 
-/**************************************************************************/
-/*!
-
-*/
-/**************************************************************************/
-float BME280::readPressure(void) {
+float BME280::readPressure(void)
+{
   int64_t var1, var2, p;
 
   readTemperature(); // must be done first to get t_fine
@@ -325,14 +314,8 @@ float BME280::readPressure(void) {
   return (float)p/256;
 }
 
-
-/**************************************************************************/
-/*!
-
-*/
-/**************************************************************************/
-float BME280::readHumidity(void) {
-
+float BME280::readHumidity(void)
+{
   readTemperature(); // must be done first to get t_fine
 
   int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
@@ -365,7 +348,7 @@ float BME280::readHumidity(void) {
     @param  atmospheric   Atmospheric pressure in hPa
 */
 /**************************************************************************/
-float BME280::readAltitude(float seaLevel)
+float BME280::readAltitude(void)
 {
   // Equation taken from BMP180 datasheet (page 16):
   //  http://www.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
@@ -375,5 +358,5 @@ float BME280::readAltitude(float seaLevel)
   //  http://forums.adafruit.com/viewtopic.php?f=22&t=58064
 
   float atmospheric = readPressure() / 100.0F;
-  return 44330.0 * (1.0 - pow(atmospheric / seaLevel, 0.1903));
+  return 44330.0 * (1.0 - pow(atmospheric / SENSORS_PRESSURE_SEALEVELHPA, 0.1903));
 }
